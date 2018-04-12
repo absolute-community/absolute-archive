@@ -10,7 +10,7 @@ sudo apt-get install libdb4.8-dev libdb4.8++-dev -y
 sudo apt-get install libminiupnpc-dev -y
 mkdir $HOME/tempABS
 chmod -R 777 $HOME/tempABS
-sudo git clone https://github.com/absolutecrypto/absolute.git $HOME/tempABS
+sudo git clone https://github.com/absolute-community/absolute.git $HOME/tempABS
 cd $HOME/tempABS
 chmod 777 autogen.sh
 ./autogen.sh
