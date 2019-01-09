@@ -108,7 +108,8 @@ echo "Step 1 : Updating packages"
 
 		printf "\n#--- basic configuration --- \nrpcuser=user\nrpcpassword=$PASS\nrpcport=18889\ndaemon=1\nlisten=1\nserver=1\nmaxconnections=256\nrpcallowip=127.0.0.1\nexternalip=$ext_ip:18888\n" > $conf_path
 		printf "\n#--- masternode ---\nmasternode=1\nmasternodeprivkey=$mn_key\n" >> $conf_path
-		printf "\n#--- new nodes ---\naddnode=139.99.41.241:18888\naddnode=139.99.41.242:18888\naddnode=139.99.202.1:18888\n" >> $conf_path
+		printf "\n#--- new nodes ---\naddnode=139.99.41.241:18888\naddnode=139.99.41.242:18888\naddnode=139.99.202.1:18888\naddnode=51.255.174.238:18888\naddnode=54.37.14.240:18888\naddnode=164.132.195.79:18888\naddnode=151.80.233.116:18888\naddnode=139.99.96.203:18888\naddnode=139.99.40.157:18888\naddnode=139.99.41.35:1:18888\naddnode=139.99.41.198:18888\naddnode=139.99.44.0:1:18888\naddnode=139.99.97.225:18888\naddnode=139.99.99.113:18888\naddnode=139.99.99.108:18888\n" >> /$HOME/.absolutecore/absolute.conf
+
 		
 	else
 		printError "Configuration already exist. Remove this file '$conf_path' or configure manyally"
