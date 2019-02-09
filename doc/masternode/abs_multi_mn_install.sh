@@ -7,6 +7,8 @@ rpc_port=59001
 root_path="$(pwd)"
 abscore_root_path="$root_path/.absolutecore"
 wallet_path="$root_path/Absolute"
+systemd_unit_path="/etc/systemd/system"
+abs_unit_file="absmn"
 
 # when new wallet release is published the next two lines needs to be updated
 wallet_ver="v12.2.4"
@@ -76,15 +78,6 @@ function setupCrontab
 {
 	echo
 	echo "*** Configuring crontab ***"
-	update-alternatives --set editor /bin/nano
-
-	echo  "Set ABS daemon to run at vps reboot..."
-	if crontab -l 2>/dev/null | grep -q -x "@reboot cd $wallet_path && ./absoluted -daemon -datadir=$abscore_path" >/dev/null ; then
-		printWarning "ABS daemon already set to run when vps reboot!"
-	else
-		(crontab -l 2>/dev/null; echo "@reboot cd $wallet_path && ./absoluted -daemon -datadir=$abscore_path") | crontab -
-		printSuccess "...done!"
-	fi
 
 	echo
 	echo  "Set sentinel to run at every minute..."
@@ -94,6 +87,19 @@ function setupCrontab
 		(crontab -l 2>/dev/null; echo "* * * * * cd $sentinel_path && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1") | crontab -
 		printSuccess "...done!"
 	fi
+}
+
+
+function setupABSd
+{
+	touch "$absd"
+	{
+	printf "Description=Start ABS daemon\n\nWants=network.target\nAfter=syslog.target network-online.target\n"
+	printf "\n[Service]\nType=forking\nTimeoutSec=15\nExecStart=$wallet_path/absoluted -datadir=$abscore_path -daemon\n"
+	printf "ExecStop=$wallet_path/absolute-cli -datadir=$abscore_path stop\n"
+	printf "ExecReload=/bin/kill -SIGHUP \$MAINPID\nRestart=on-failure\nRestartSec=15\nKillMode=process\n"
+	printf "\n[Install]\nWantedBy=multi-user.target\n"
+	} > "$absd"
 }
 
 
@@ -251,6 +257,9 @@ for privkey in "${@}"; do
 
 		setupCrontab
 
+		absd="$systemd_unit_path/$abs_unit_file$((count+1)).service"
+		setupABSd
+		systemctl enable "$abs_unit_file$((count+1))"
 	else
 		printError "Configuration directory found! Remove $abscore_path directory or configure daemon manually!"
 		printError "Failed - masternode configuration."
@@ -276,8 +285,7 @@ echo
 echo "That's it! Everything is done! You just have to start the masternode(s) with next command(s):"
 count=0
 while [ "$count" -lt "$#" ]; do
-	abscore_path="$abscore_root_path$((count+1))"
-	printSuccess "absoluted -daemon -datadir=$abscore_path"
+	printSuccess "systemctl start $abs_unit_file$((count+1))"
 	((++count))
 done
 echo
