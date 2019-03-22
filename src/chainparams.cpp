@@ -226,7 +226,7 @@ public:
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 1 * 60 * 60; // Absolute: 1 day
         consensus.nPowTargetSpacing = 1 * 60; // Absolute: 1 minutes
-        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPowDGWHeight = 100;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
@@ -263,7 +263,7 @@ public:
         nDefaultPort = 17777;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nDelayGetHeadersTime = 24 * 60 * 60 * 14;
-        nPruneAfterHeight = 150;
+        nPruneAfterHeight = 1500000;
 /* old
         genesis = CreateGenesisBlock(1518597800, 519328, 0x1e0ffff0, 1, 30 * COIN);
         assert(consensus.hashGenesisBlock == uint256S("0x0000e585b5b736b3a33ae8999fa2d63e036fb42e56ea5b6e5eacf3b473dd4e6"));
