@@ -205,7 +205,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 500; // Blocks per year
-        consensus.nMasternodePaymentsStartBlock = 1024; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nMasternodePaymentsStartBlock = 400; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 250; // increase after 6 weeks first
         consensus.nMasternodePaymentsIncreasePeriod = 350; // increase every 4 weeks afterwards
         consensus.nInstantSendKeepLock = 6;
